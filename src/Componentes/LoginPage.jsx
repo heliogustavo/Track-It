@@ -3,7 +3,7 @@ import { useContext, useState } from "react"
 import Logo1 from "../assets/logoTrackIt.png"
 import { Link, useNavigate } from "react-router-dom";
 import apiAuth from "../services/apiAuth";
-import { UserContext } from '../Contexts/UserContext'
+import { UsuarioContext } from '../Contexts/UsuarioContext'
 import { ThreeDots } from "react-loader-spinner"
 
 export default function LoginPage() {
@@ -11,7 +11,7 @@ export default function LoginPage() {
     const [carregando, setCarregando] = useState(false)
 
     const [inforDoFormulario, setInforDoFormulario] = useState({ email: "", password: "" })
-    const { usuario, setUsuario } = useContext(UserContext)
+    const { usuario, setUsuario } = useContext(UsuarioContext)
     console.log(usuario)
 
     function handleForm(e) {
@@ -63,7 +63,7 @@ export default function LoginPage() {
 
                     />
                     <ButtonEntrar type="submit" disabled={carregando}>
-                        {carrregando ? (
+                        {carregando ? (
                             <ThreeDots width={50} height={50} color="#FFFFFF" />
                         ) : "Entrar"}
 
@@ -149,6 +149,9 @@ const ButtonEntrar = styled.button`
     width: 321px;
     height: 45px;
     border-radius: 4.64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     background-color: #52B6FF;
     border-radius: 4.63636px;

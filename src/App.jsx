@@ -8,7 +8,7 @@ import TopoPerfil from './Componentes/TopoPerfil';
 import Hoje from './Componentes/Hoje';
 import Rodape from './Componentes/Rodape';
 import Historico from './Componentes/Historico';
-import { UserContext } from './Contexts/UserContext';
+import { UsuarioContext } from './Contexts/UsuarioContext';
 
 export default function App() {
   const [count, setCount] = useState(0)
@@ -19,7 +19,7 @@ export default function App() {
       <GlobalStyle />
 
       <BrowserRouter>
-        <UserContext.Provider value={{usuario, setUsuario}} >
+        <UsuarioContext.Provider value={{usuario, setUsuario}} >
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<Cadastro />} />
@@ -53,7 +53,7 @@ export default function App() {
                 </>
               } />
           </Routes>
-        </UserContext.Provider>
+        </UsuarioContext.Provider>
       </BrowserRouter>
 
 
