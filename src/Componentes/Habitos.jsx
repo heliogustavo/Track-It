@@ -1,29 +1,81 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import AddHabito from "./AddHabito";
+import HabitCard from "../../components/HabitCard/HabitCard"
+import plusIcon from "../../assets/plus.svg"
+import StyledSubtitle from "../../components/StyledSubtitle"
+import apiHabits from "../../services/apiHabits"
+import { useContext, useEffect, useState } from "react"
+import { UserContext } from "../../contexts/UserContext"
+import { ThreeDots } from "react-loader-spinner"
+import { ProgressContext } from "../../contexts/ProgressContext"
+import apiToday from "../../services/apiToday"
+import CriarHabito from "./CriarHabito"
 
-export default function Habitos() {
-    const [mostrarAddHab,setMostrarAddHab] = useState(false)
-    const [listaDeHabitos, setListaDeHabitos] = useState([])
+export default function HabitsPage() {
+    const [habits, setHabits] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [createHabitOpened, setCreateHabitOpened] = useState(false)
+    const { user } = useContext(UserContext)
+    const { setProgress } = useContext(ProgressContext)
 
-    function adicionarHabito(){
-        const novoHabito = {
-            nomeDoHabito: "Ler 1 cap. de Livro",
-            dias: 0
-        }
-        setMostrarAddHab(true)
-        setListaDeHabitos([...listaDeHabitos, novoHabito]);
+    useEffect(getHabitsList, [])
+
+    function getTodaysHabits() {
+        apiToday.getToday(user.token)
+            .then(res => {
+                const apiHabits = res.data
+                const doneHabits = apiHabits.filter(h => h.done === true)
+                const calc = ((doneHabits.length / apiHabits.length) * 100).toFixed(0)
+                setProgress(calc)
+            })
+            .catch(err => alert(err.response.data.message))
     }
 
+    function getHabitsList() {
+        apiHabits.getHabits(user.token)
+            .then(res => {
+                setIsLoading(false)
+                setHabits(res.data)
+                getTodaysHabits()
+            })
+            .catch(err => {
+                setIsLoading(false)
+                alert(err.response.data.message)
+            })
+    }
     return (
         <ContainerGeral>
 
             <BarraADDHabito>
-                <MeusHabitosText>Meus Hábitos</MeusHabitosText>
-                <BotaoADDHabito onClick={adicionarHabito}>+</BotaoADDHabito>
-            </BarraADDHabito> 
-            { mostrarAddHab ? <AddHabito setMostrarAddHab={setMostrarAddHab}/> : <> </>}
-            <ParagrafotH3>Você ainda não tem nenhum Hábito cadastrado ainda. Adicione um hábito para começar a trackear!</ParagrafotH3>
+                <MeusHabitosText>Meus hábitos</MeusHabitosText>
+                <BotaoADDHabito onClick={() => setCreateHabitOpened(!createHabitOpened)}>
+                    <img src={plusIcon} alt="Ícone Adicionar" />
+                </BotaoADDHabito>
+            </BarraADDHabito>
+
+            <CriarHabito
+                isOpened={createHabitOpened}
+                setIsOpened={setCreateHabitOpened}
+                getHabitsList={getHabitsList}
+            />
+
+            {isLoading ? (
+                <ThreeDots height={80} width={80} color={"#126ba5"} />
+            ) : (
+                habits.length === 0 ? (
+                    <StyledSubtitle>
+                        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                    </StyledSubtitle>
+                ) : (
+                    habits.map(h => (
+                        <HabitCard
+                            key={h.id}
+                            id={h.id}
+                            name={h.name}
+                            days={h.days}
+                            getHabitsList={getHabitsList}
+                        />
+                    ))
+                )
+            )}
         </ContainerGeral>
     )
 }
