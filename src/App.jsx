@@ -8,50 +8,52 @@ import TopoPerfil from './Componentes/TopoPerfil';
 import Hoje from './Componentes/Hoje';
 import Rodape from './Componentes/Rodape';
 import Historico from './Componentes/Historico';
-import { formToJSON } from 'axios';
+import { UserContext } from './Contexts/UserContext';
 
 export default function App() {
   const [count, setCount] = useState(0)
+  const [usuario, setUsuario] = useState({})
 
   return (
     <>
       <GlobalStyle />
 
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route
-            path="/habitos"
-            element={
-              <>
-                <TopoPerfil />
-                <Habitos />
-                <Rodape />
+        <UserContext.Provider value={{usuario, setUsuario}} >
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route
+              path="/habitos"
+              element={
+                <>
+                  <TopoPerfil />
+                  <Habitos />
+                  <Rodape />
 
-              </>
-            } />
-          <Route
-            path="/hoje"
-            element={
-              <>
-                <TopoPerfil />
-                <Hoje />
-                <Rodape />
+                </>
+              } />
+            <Route
+              path="/hoje"
+              element={
+                <>
+                  <TopoPerfil />
+                  <Hoje />
+                  <Rodape />
 
-              </>
-            } />           <Route
-            path="/historico"
-            element={
-              <>
-                <TopoPerfil />
-                <Historico />
-                <Rodape />
+                </>
+              } />           <Route
+              path="/historico"
+              element={
+                <>
+                  <TopoPerfil />
+                  <Historico />
+                  <Rodape />
 
-              </>
-            } />
-        </Routes>
-
+                </>
+              } />
+          </Routes>
+        </UserContext.Provider>
       </BrowserRouter>
 
 

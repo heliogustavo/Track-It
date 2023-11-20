@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom"
 
 export default function LoginPage() {
     const navigate = useNavigate()
+    const [inforDoFormulario, setInforDoFormulario] = useState({email: "", password: "", name:"", image:""})
 
-    function handleCadastro(e){
-            e.preventDefault()
-            navigate("/")
+
+    function handleCadastro(e) {
+        e.preventDefault()
+        navigate("/")
     }
     return (
 
@@ -16,17 +18,41 @@ export default function LoginPage() {
             <img src={Logo1} alt="erro" />
             <NomeLogo>TrackIt</NomeLogo>
             <ContainerInputs onSubmit={handleCadastro}>
-                    <label>
-                        <InputEmail type="text" placeholder="Email" name="email" />
-                        <InputSenha type="text" placeholder="Senha" name="senha" />
-                        <InputSenha type="text" placeholder="Nome" name="nome" />
-                        <InputSenha type="text" placeholder="Foto" name="foto" />
+                <label>
+                    <InputEmail
+                        required
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={inforDoFormulario.email}
+                        onChange={handleForm}
+                    /><InputEmail
+                        required
+                        type="password"
+                        placeholder="Senha"
+                        name="password"
+                        value={inforDoFormulario.password}
+                        onChange={handleForm}
+                    /><InputEmail
+                        required
+                        type="text"
+                        placeholder="Nome"
+                        name="name"
+                        value={inforDoFormulario.name}
+                        onChange={handleForm}
+                    /><InputEmail
+                        required
+                        type="url"
+                        placeholder="Foto"
+                        name="image"
+                        value={inforDoFormulario.image}
+                        onChange={handleForm}
+                    />
+                    <ButtonEntrar type="submit">Cadastrar</ButtonEntrar>
+                    <LinkLogin>Já tem uma conta? Faça Login!</LinkLogin>
 
-                        <ButtonEntrar>Cadastrar</ButtonEntrar>
-                        <LinkLogin>Já tem uma conta? Faça Login!</LinkLogin>
-
-                        {/*<input type="submit" value="Enviar" /> */}
-                    </label>
+                    {/*<input type="submit" value="Enviar" /> */}
+                </label>
             </ContainerInputs>
 
         </ContainerLogin>
