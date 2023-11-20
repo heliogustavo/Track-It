@@ -9,16 +9,18 @@ import Hoje from './Componentes/Hoje';
 import Rodape from './Componentes/Rodape';
 import Historico from './Componentes/Historico';
 import { UsuarioContext } from './Contexts/UsuarioContext';
+import { ProgressoContext } from './Contexts/ProgressoContext';
 
 export default function App() {
-  const [count, setCount] = useState(0)
   const [usuario, setUsuario] = useState({})
+  const [progresso, setProgresso] = useState(65)
 
   return (
     <>
       <GlobalStyle />
 
       <BrowserRouter>
+        <ProgressoContext.Provider value={{progresso, setProgresso}}>
         <UsuarioContext.Provider value={{usuario, setUsuario}} >
           <Routes>
             <Route path="/" element={<LoginPage />} />
@@ -54,6 +56,7 @@ export default function App() {
               } />
           </Routes>
         </UsuarioContext.Provider>
+        </ProgressoContext.Provider>
       </BrowserRouter>
 
 

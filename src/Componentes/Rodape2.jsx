@@ -12,10 +12,11 @@ export default function Rodape() {
 
   return (
     <BotoesRodape>
-        <BotaoDeAcessoRodape to={'/habitos'}>Hábitos</BotaoDeAcessoRodape>
-        <ContentProgressbar>
-          <HojeButton>
+      <BotaoDeAcessoRodape to={'/habitos'}>Hábitos</BotaoDeAcessoRodape>
+      <ContentProgressbar>
+        <HojeButton>
           <Link data-test="today-link" to="/hoje">
+            <Example label="Background">
               <CircularProgressbar
                 value={progresso}
                 text={"Hoje"}
@@ -28,11 +29,12 @@ export default function Rodape() {
                   trailColor: "transparent"
                 })}
               />
-            </Link>
-          </HojeButton>
-        </ContentProgressbar>
-      
-        <BotaoDeAcessoRodape to={'/historico'}>Histórico</BotaoDeAcessoRodape>
+            </Example>
+          </Link>
+        </HojeButton>
+      </ContentProgressbar>
+
+      <BotaoDeAcessoRodape to={'/historico'}>Histórico</BotaoDeAcessoRodape>
 
     </BotoesRodape>
   )

@@ -1,16 +1,19 @@
 import React from "react"
 import styled from "styled-components"
-import Logo1 from "../assets/logoTrackIt.png"
 import { Link } from "react-router-dom"
+import { useContext } from "react";
+import { UsuarioContext } from "../Contexts/UsuarioContext"
 
 
 export default function TopoPerfil() {
+    const { usuario } = useContext(UsuarioContext)
+
     return (
         <BarraTopo>
             <Link to={"/hoje"}>
                 <NomeLogo>TrackIt</NomeLogo>
             </Link>
-            <img src={Logo1} alt="erro" />
+            <img src={usuario.image} alt="Imagem de perfil" />
         </BarraTopo>
     )
 }
