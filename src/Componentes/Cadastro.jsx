@@ -1,16 +1,35 @@
 import styled from "styled-components"
 import Logo1 from "../assets/logoTrackIt.png"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { ThreeDots } from "react-loader-spinner"
+import apiAuth from "../services/apiAuth"
 
 export default function LoginPage() {
     const navigate = useNavigate()
-    const [inforDoFormulario, setInforDoFormulario] = useState({email: "", password: "", name:"", image:""})
+    const [inforDoFormulario, setInforDoFormulario] = useState({ email: "", password: "", name: "", image: "" })
+    const [carregando, setCarregando] = useState(false) 
 
-
-    function handleCadastro(e) {
-        e.preventDefault()
-        navigate("/")
+    function handleForm(e) {
+        setInforDoFormulario({ ...inforDoFormulario, [e.target.name]: e.target.value })
     }
+    function handleCadastro(e) {
+        e.preventDefault() 
+        setCarregando(true)
+
+        apiAuth.cadastro(inforDoFormulario)
+        
+            .then(res => {
+                setCarregando(false)
+                navigate("/")
+            })
+            .catch(err => {
+                setCarregando(false)
+                alert(err.response.data.message)
+            }
+            )
+    }
+
     return (
 
 
@@ -18,13 +37,13 @@ export default function LoginPage() {
             <img src={Logo1} alt="erro" />
             <NomeLogo>TrackIt</NomeLogo>
             <ContainerInputs onSubmit={handleCadastro}>
-                <label>
                     <InputEmail
                         required
                         type="email"
                         placeholder="Email"
                         name="email"
                         value={inforDoFormulario.email}
+                        disabled={carregando}
                         onChange={handleForm}
                     /><InputEmail
                         required
@@ -32,6 +51,7 @@ export default function LoginPage() {
                         placeholder="Senha"
                         name="password"
                         value={inforDoFormulario.password}
+                        disabled={carregando}
                         onChange={handleForm}
                     /><InputEmail
                         required
@@ -39,6 +59,7 @@ export default function LoginPage() {
                         placeholder="Nome"
                         name="name"
                         value={inforDoFormulario.name}
+                        disabled={carregando}
                         onChange={handleForm}
                     /><InputEmail
                         required
@@ -46,13 +67,18 @@ export default function LoginPage() {
                         placeholder="Foto"
                         name="image"
                         value={inforDoFormulario.image}
+                        disabled={carregando}
                         onChange={handleForm}
                     />
-                    <ButtonEntrar type="submit">Cadastrar</ButtonEntrar>
-                    <LinkLogin>Já tem uma conta? Faça Login!</LinkLogin>
+                    <ButtonEntrar type="submit" disabled={carregando}>
+                        {carregando ? (
+                            <ThreeDots width={50} height={50} color="#FFFFFF" />
+                        ) : "Cadastrar"}
 
-                    {/*<input type="submit" value="Enviar" /> */}
-                </label>
+                    </ButtonEntrar>
+                    <Link to={"/"}>
+                        <LinkLogin>Já tem uma conta? Faça Login!</LinkLogin>
+                    </Link>
             </ContainerInputs>
 
         </ContainerLogin>
@@ -87,7 +113,9 @@ letter-spacing: 0em;
 
 `
 const ContainerInputs = styled.form`
-display: flex;
+ display: flex; 
+align-items: center;
+justify-content: center;
 flex-direction: column;
 background-color: #FFFFFF;
 width: 305px;
@@ -100,6 +128,7 @@ height: 45px;
 background: #FFFFFF;
 border: 1px solid #D5D5D5;
 border-radius: 5px;
+margin-bottom: 6px;
 
 font-family: 'Lexend Deca';
 font-style: normal;
@@ -130,7 +159,9 @@ const ButtonEntrar = styled.button`
 width: 303px;
 height: 45px;
 border-radius: 4.64px;
-
+display: flex;
+align-items: center;
+justify-content: center;
 background-color: #52B6FF;
 border-radius: 4.63636px;
 font-family: 'Lexend Deca';
@@ -142,6 +173,7 @@ text-align: center;
 
 color: #FFFFFF;
 margin-top: 6px;
+margin-left: 6px;
 
 `
 const LinkLogin = styled.p`
@@ -155,4 +187,8 @@ text-align: center;
 text-decoration-line: underline;
 color: #52B6FF;
 margin-top: 27px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-left: 43px;
 `

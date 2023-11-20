@@ -8,7 +8,7 @@ function login(body){
 }
 
 function cadastro(body ) {
-    const promise = axios.post(`${BASE_URL}/cadastro`, body)
+    const promise = axios.post(`${BASE_URL}/sign-up`, body)
     return promise
 }
 

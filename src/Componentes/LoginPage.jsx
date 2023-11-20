@@ -9,7 +9,6 @@ import { ThreeDots } from "react-loader-spinner"
 export default function LoginPage() {
     const navigate = useNavigate()
     const [carregando, setCarregando] = useState(false)
-
     const [inforDoFormulario, setInforDoFormulario] = useState({ email: "", password: "" })
     const { usuario, setUsuario } = useContext(UsuarioContext)
     console.log(usuario)
